@@ -1,6 +1,5 @@
 const assert = require("assert");
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
+const { JSDOM } = require("jsdom");
 
 const {
   compareAddresses,
@@ -11,10 +10,10 @@ const {
   getLastAddress,
   nextNode,
   cloneNodeProgressive,
-} = require("../index");
+} = require("./index.js");
 
-describe("compareAddresses", function() {
-  it("returns undefined if any addresses is undefined", function() {
+describe("compareAddresses", function () {
+  it("returns undefined if any addresses is undefined", function () {
     const result1 = compareAddresses([1], undefined);
     assert.strictEqual(undefined, result1);
     const result2 = compareAddresses(undefined, [1]);
@@ -22,42 +21,42 @@ describe("compareAddresses", function() {
     const result3 = compareAddresses(undefined, undefined);
     assert.strictEqual(undefined, result3);
   });
-  it("returns  0 if both addresses are empty", function() {
+  it("returns  0 if both addresses are empty", function () {
     const result = compareAddresses([], []);
     assert.strictEqual(0, result);
   });
-  it("returns  0 if addresses are equal and not empty", function() {
+  it("returns  0 if addresses are equal and not empty", function () {
     const result = compareAddresses([1, 2, 3], [1, 2, 3]);
     assert.strictEqual(0, result);
   });
-  it("returns +1 when first's tail is greater than second's", function() {
+  it("returns +1 when first's tail is greater than second's", function () {
     const result = compareAddresses([1, 2, 4], [1, 2, 3]);
     assert.strictEqual(1, result);
   });
-  it("returns -1 when first's tail is smaller than second's", function() {
+  it("returns -1 when first's tail is smaller than second's", function () {
     const result = compareAddresses([1, 2, 2], [1, 2, 3]);
     assert.strictEqual(-1, result);
   });
-  it("returns -1 when first address is a prefix of second address", function() {
+  it("returns -1 when first address is a prefix of second address", function () {
     const result = compareAddresses([1, 2], [1, 2, 1]);
     assert.strictEqual(-1, result);
   });
-  it("returns -1 when first address is an empty prefix of second address", function() {
+  it("returns -1 when first address is an empty prefix of second address", function () {
     const result = compareAddresses([], [1, 2]);
     assert.strictEqual(-1, result);
   });
-  it("returns +1 when second address is a prefix of first address", function() {
+  it("returns +1 when second address is a prefix of first address", function () {
     const result = compareAddresses([1, 2, 1], [1, 2]);
     assert.strictEqual(1, result);
   });
-  it("returns +1 when second address is an empty prefix of first address", function() {
+  it("returns +1 when second address is an empty prefix of first address", function () {
     const result = compareAddresses([1, 2], [1]);
     assert.strictEqual(1, result);
   });
 });
 
-describe("getElementByAddress", function() {
-  it("returns the node given by address", function() {
+describe("getElementByAddress", function () {
+  it("returns the node given by address", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -65,7 +64,7 @@ describe("getElementByAddress", function() {
     const result = getElementByAddress(root, [2]);
     assert.strictEqual(result.outerHTML, "<i>Think different</i>");
   });
-  it("returns undefined if address doesn't match", function() {
+  it("returns undefined if address doesn't match", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -73,7 +72,7 @@ describe("getElementByAddress", function() {
     const result = getElementByAddress(root, [10]);
     assert.strictEqual(result, undefined);
   });
-  it("returns the root for an empty address", function() {
+  it("returns the root for an empty address", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -86,8 +85,8 @@ describe("getElementByAddress", function() {
   });
 });
 
-describe("getAddressOfElement", function() {
-  it("returns the address of an element node", function() {
+describe("getAddressOfElement", function () {
+  it("returns the address of an element node", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -98,7 +97,7 @@ describe("getAddressOfElement", function() {
     const result = getAddressOfElement(root, sub);
     assert.deepStrictEqual(result, [2]);
   });
-  it("returns the address of a text node", function() {
+  it("returns the address of a text node", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -109,7 +108,7 @@ describe("getAddressOfElement", function() {
     const result = getAddressOfElement(root, sub);
     assert.deepStrictEqual(result, [2, 1]);
   });
-  it("returns an empty address for root node", function() {
+  it("returns an empty address for root node", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -119,8 +118,8 @@ describe("getAddressOfElement", function() {
   });
 });
 
-describe("getFirstAddress", function() {
-  it("returns undefined if root has no child", function() {
+describe("getFirstAddress", function () {
+  it("returns undefined if root has no child", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"></div>`);
@@ -128,7 +127,7 @@ describe("getFirstAddress", function() {
     const result = getFirstAddress(root);
     assert.deepStrictEqual(result, undefined);
   });
-  it("returns an address of [1] if root has a single node", function() {
+  it("returns an address of [1] if root has a single node", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b></div>`);
@@ -136,7 +135,7 @@ describe("getFirstAddress", function() {
     const result = getFirstAddress(root);
     assert.deepStrictEqual(result, [1]);
   });
-  it("returns an address of [1] if root has many nodes", function() {
+  it("returns an address of [1] if root has many nodes", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -146,8 +145,8 @@ describe("getFirstAddress", function() {
   });
 });
 
-describe("getLastAddress", function() {
-  it("returns undefined if root has no nodes", function() {
+describe("getLastAddress", function () {
+  it("returns undefined if root has no nodes", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"></div>`);
@@ -155,7 +154,7 @@ describe("getLastAddress", function() {
     const result = getLastAddress(root);
     assert.deepStrictEqual(result, undefined);
   });
-  it("returns the address of the last node if root has one node", function() {
+  it("returns the address of the last node if root has one node", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b></b></div>`);
@@ -163,7 +162,7 @@ describe("getLastAddress", function() {
     const result = getLastAddress(root);
     assert.deepStrictEqual(result, [1]);
   });
-  it("returns the address of the last node if root has many nodes", function() {
+  it("returns the address of the last node if root has many nodes", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -173,8 +172,8 @@ describe("getLastAddress", function() {
   });
 });
 
-describe("nextNode", function() {
-  it("returns the first text node within an element", function() {
+describe("nextNode", function () {
+  it("returns the first text node within an element", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -185,7 +184,7 @@ describe("nextNode", function() {
     const result = nextNode(root, sub);
     assert.deepStrictEqual(result.nodeValue, "Be bold!");
   });
-  it("returns node's parent's sibling if node is the last of it's parent", function() {
+  it("returns node's parent's sibling if node is the last of it's parent", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -197,7 +196,7 @@ describe("nextNode", function() {
     const result = nextNode(root, inner);
     assert.deepStrictEqual(result.outerHTML, "<i>Think different</i>");
   });
-  it("returns undefined if node is the last", function() {
+  it("returns undefined if node is the last", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -211,8 +210,8 @@ describe("nextNode", function() {
   });
 });
 
-describe("subNode", function() {
-  it("extracts from a starting address, to the end", function() {
+describe("subNode", function () {
+  it("extracts from a starting address, to the end", function () {
     const {
       window: { document },
     } = new JSDOM(`<div id="root"><b>Be bold!</b><i>Think different</i></div>`);
@@ -225,7 +224,7 @@ describe("subNode", function() {
       '<div id="root"><i>Think different</i></div>'
     );
   });
-  it("extracts from a starting address, to an ending address excluded", function() {
+  it("extracts from a starting address, to an ending address excluded", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -242,7 +241,7 @@ describe("subNode", function() {
       '<div id="root"><b>Be bold!</b><i>Think different</i></div>'
     );
   });
-  it("extracts from a starting address, to an ending address included", function() {
+  it("extracts from a starting address, to an ending address included", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -259,7 +258,7 @@ describe("subNode", function() {
       '<div id="root"><b>Be bold!</b><i>Think different</i><u></u></div>'
     );
   });
-  it("extracts from the begining, to an ending address included", function() {
+  it("extracts from the begining, to an ending address included", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -275,7 +274,7 @@ describe("subNode", function() {
       '<div id="root"><b>Be bold!</b><i>Think different</i></div>'
     );
   });
-  it("extracts from the begining, to the end", function() {
+  it("extracts from the begining, to the end", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -290,8 +289,8 @@ describe("subNode", function() {
   });
 });
 
-describe("cloneNodeProgressive", function() {
-  it("clones the complete source node and returns undefined, when stop condition is always false", function() {
+describe("cloneNodeProgressive", function () {
+  it("clones the complete source node and returns undefined, when stop condition is always false", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -309,7 +308,7 @@ describe("cloneNodeProgressive", function() {
       `<div><b>Be bold!</b><i>Think different</i><u>But be productive</u></div>`
     );
   });
-  it("clones the source node from starting point, increment addresses, and returns overflow when stop condition is true", function() {
+  it("clones the source node from starting point, increment addresses, and returns overflow when stop condition is true", function () {
     const {
       window: { document },
     } = new JSDOM(
@@ -326,6 +325,9 @@ describe("cloneNodeProgressive", function() {
       from
     );
     assert.deepStrictEqual(overflow.address, [10, 1]);
-    assert.strictEqual(target.outerHTML, "<div><b>Be bold!</b><i>Think different</i></div>");
+    assert.strictEqual(
+      target.outerHTML,
+      "<div><b>Be bold!</b><i>Think different</i></div>"
+    );
   });
 });

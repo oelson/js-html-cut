@@ -4,7 +4,7 @@
   "description": "Cut HTML with respect to structure, using an address-like vector of positions",
   "main": "index.js",
   "scripts": {
-    "test": "npx mocha"
+    "test": "npx mocha ./test.js"
   },
   "repository": {
     "type": "git",
