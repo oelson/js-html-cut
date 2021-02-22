@@ -1,0 +1,29 @@
+{
+  "name": "html-cut",
+  "version": "1.0.0",
+  "description": "Cut HTML with respect to structure, using an address-like vector of positions",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oelson/js-html-cut.git"
+  },
+  "keywords": [
+    "html",
+    "cut",
+    "address",
+    "dom"
+  ],
+  "author": "Nelson Houillon",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/oelson/js-html-cut/issues"
+  },
+  "homepage": "https://github.com/oelson/js-html-cut#readme",
+  "devDependencies": {
+    "jsdom": "^16.4.0",
+    "mocha": "^8.3.0"
+  }
+}
